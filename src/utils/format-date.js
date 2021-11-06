@@ -20,9 +20,10 @@ export function formatDateTime(timestamp) {
 }
 
 export function formatDateTimeLocal(local) {
-  const match = local.match(/([T0-9-:]*)([+-][:0-9]*)/);
-  const datetime = match.length >= 1 ? match[1] : local;
-  const offset = match.length >= 2 ? ` UTC${match[2]}` : '';
+  const match = local.match(/([0-9-]*T[0-9:]*)([+-][:0-9]*)/);
+  const useMatch = match && match.length === 3;
+  const datetime = useMatch ? match[1] : local;
+  const offset = useMatch ? ` UTC${match[2]}` : '';
   const dateString = new Intl.DateTimeFormat("en-US", {
     year: "numeric",
     month: "long",
