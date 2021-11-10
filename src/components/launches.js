@@ -9,6 +9,9 @@ import Error from "./error";
 import Breadcrumbs from "./breadcrumbs";
 import LoadMoreButton from "./load-more-button";
 
+import { Star } from 'react-feather';
+import { useFavourites } from '../utils/use-favourites';
+
 const PAGE_SIZE = 12;
 
 export default function Launches() {
@@ -20,7 +23,8 @@ export default function Launches() {
       sort: "launch_date_utc",
     }
   );
-  console.log(data, error);
+  //console.log(data, error);
+  const [ isFavourite, toggleFavourite ] = useFavourites();
   return (
     <div>
       <Breadcrumbs
@@ -32,7 +36,7 @@ export default function Launches() {
           data
             .flat()
             .map((launch) => (
-              <LaunchItem launch={launch} key={launch.flight_number} />
+              <LaunchItem launch={launch} isFavourite={isFavourite(launch)} toggleFavourite={toggleFavourite} key={launch.flight_number}/>
             ))}
       </SimpleGrid>
       <LoadMoreButton
@@ -45,7 +49,13 @@ export default function Launches() {
   );
 }
 
-export function LaunchItem({ launch }) {
+export function LaunchItem({ launch, isFavourite, toggleFavourite }) {
+
+  const onFavourite = (e, launch) => {
+    e.preventDefault();
+    toggleFavourite(launch);
+  }
+
   return (
     <Box
       as={Link}
@@ -77,6 +87,18 @@ export function LaunchItem({ launch }) {
         objectFit="contain"
         objectPosition="bottom"
       />
+
+      <Box 
+        position="absolute"
+        bottom="0"
+        right="0"
+        padding="2"
+        onClick={(e) => onFavourite(e, launch)}>
+        { isFavourite
+          ? <Star color='green'/>
+          : <Star color='red'/>
+        }
+      </Box >
 
       <Box p="6">
         <Box d="flex" alignItems="baseline">

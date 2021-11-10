@@ -26,6 +26,9 @@ import { formatDateTime, formatDateTimeLocal } from "../utils/format-date";
 import Error from "./error";
 import Breadcrumbs from "./breadcrumbs";
 
+import { Star } from 'react-feather';
+import { useFavourites } from '../utils/use-favourites';
+
 export default function Launch() {
   let { launchId } = useParams();
   const { data: launch, error } = useSpaceX(`/launches/${launchId}`);
@@ -63,6 +66,7 @@ export default function Launch() {
 }
 
 function Header({ launch }) {
+  const [ isFavourite, toggleFavourite ] = useFavourites();
   return (
     <Flex
       bgImage={`url(${launch.links.flickr_images[0]})`}
@@ -108,6 +112,15 @@ function Header({ launch }) {
             Failed
           </Badge>
         )}
+        <Box 
+          backgroundColor="white"
+          borderRadius="1px"
+          onClick={(e) => toggleFavourite(launch)}>
+          { isFavourite(launch)
+            ? <Star color='green'/>
+            : <Star color='red'/>
+          }
+        </Box >
       </Stack>
     </Flex>
   );
