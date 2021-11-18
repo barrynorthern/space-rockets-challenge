@@ -1,17 +1,15 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react"
+import { useLocalStorageState } from "../local-storage-context"
 
-function getStorageValue(key, defaultValue) {
-  const saved = localStorage.getItem(key);
-  const initial = JSON.parse(saved);
-  return initial || defaultValue;
-}
+export const useLocalStorage = (key) => {
 
-export const useLocalStorage = (key, defaultValue) => {
-  const [value, setValue] = useState(() => getStorageValue(key, defaultValue));
+  const { state, dispatch } = useLocalStorageState();
+  const dispatchValue = (value) => dispatch({type: 'SET_DATA', payload: { key: key, data: value }});
+  const setValue = (set) => dispatchValue(typeof(set) === 'function' ? set(state[key]) : set);
 
   useEffect(() => {
-    localStorage.setItem(key, JSON.stringify(value));
-  }, [key, value]);
+    localStorage.setItem(key, JSON.stringify(state[key]));
+  }, [key, state]);
 
-  return [value, setValue];
+  return [state[key], setValue];
 };

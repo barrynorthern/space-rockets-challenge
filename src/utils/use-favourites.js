@@ -1,16 +1,20 @@
 import { useLocalStorage } from "./use-local-storage";
 
 export const useFavourites = () => {
-    
-  const [ favourites, setFavourites ] = useLocalStorage('favourites', { flight_numbers: [] });
+  const [ favourites, setFavourites ] = useLocalStorage('launch-favourites');
+  return FavouritesManager(favourites, setFavourites);
+}
 
-  const isFavourite = (launch) => favourites.flight_numbers.includes(launch.flight_number);
-  const addFavourite = (launch) => setFavourites({flight_numbers: [...favourites.flight_numbers, launch.flight_number]});
-  const removeFavourite = (launch) => setFavourites({flight_numbers: favourites.flight_numbers.filter(n => n !== launch.flight_number)});
-  const toggleFavourite = (launch) => (isFavourite(launch) ? removeFavourite : addFavourite)(launch);
+export const FavouritesManager = (favourites, setFavourites) => {
+
+  const isFavourite = (id) => favourites.ids && favourites.ids.includes(id);
+  const addFavourite = (id) => setFavourites(previous => { return {ids: [...(previous.ids || []), id]}; });
+  const removeFavourite = (id) => setFavourites(previous => { return {ids: (previous.ids || []).filter(n => n !== id)}; });
+  const toggleFavourite = (id) => (isFavourite(id) ? removeFavourite : addFavourite)(id);
   
-  return [
+  return {
     isFavourite,
-    toggleFavourite
-  ];
+    toggleFavourite,
+    favourites
+  };
 }

@@ -66,7 +66,11 @@ export default function Launch() {
 }
 
 function Header({ launch }) {
-  const [ isFavourite, toggleFavourite ] = useFavourites();
+  const { isFavourite, toggleFavourite } = useFavourites();
+  const onFavourite = (e, launch) => {
+    e.preventDefault();
+    toggleFavourite(launch.flight_number);
+  }
   return (
     <Flex
       bgImage={`url(${launch.links.flickr_images[0]})`}
@@ -113,10 +117,11 @@ function Header({ launch }) {
           </Badge>
         )}
         <Box 
+          as={Link}
           backgroundColor="white"
           borderRadius="1px"
-          onClick={(e) => toggleFavourite(launch)}>
-          { isFavourite(launch)
+          onClick={(e) => onFavourite(e, launch)}>
+          { isFavourite(launch.flight_number)
             ? <Star color='green'/>
             : <Star color='red'/>
           }
