@@ -1,12 +1,11 @@
 import React from "react";
-import { Badge, Box, Image, Text, Flex } from "@chakra-ui/core";
+import { Badge, Box, Image, Text, Flex } from "@chakra-ui/react";
 import { format as timeAgo } from "timeago.js";
 import { Link } from "react-router-dom";
 import { formatDate } from "../utils/format-date";
-import { Star } from 'react-feather';
 import { useSpaceX } from "../utils/use-space-x";
 import Error from "./error"; // might need a different error markup here
-import { useFavourites } from '../utils/use-favourites';
+import Favourite from './favourite';
 
 export function LaunchItemById({ launchId }) {
 
@@ -30,13 +29,6 @@ export function LaunchItemById({ launchId }) {
 }
 
 export function LaunchItem({ launch }) {
-
-    const { isFavourite, toggleFavourite } = useFavourites();
-
-    const onFavourite = (e, launch) => {
-      e.preventDefault();
-      toggleFavourite(launch.flight_number);
-    }
 
     return (launch &&
       <Box
@@ -75,11 +67,11 @@ export function LaunchItem({ launch }) {
           <Flex direction="horizontal" justify="space-between" alignItems="baseline">
             <Box>
               {launch.launch_success ? (
-                <Badge px="2" variant="solid" variantColor="green">
+                <Badge px="2" variant="solid" colorScheme="green">
                   Successful
                 </Badge>
               ) : (
-                <Badge px="2" variant="solid" variantColor="red">
+                <Badge px="2" variant="solid" colorScheme="red">
                   Failed
                 </Badge>
               )}
@@ -94,13 +86,7 @@ export function LaunchItem({ launch }) {
                 {launch.rocket.rocket_name} &bull; {launch.launch_site.site_name}
               </Box>
             </Box>
-            <Box 
-              onClick={(e) => onFavourite(e, launch)}>
-              { isFavourite(launch.flight_number)
-                ? <Star color='green'/>
-                : <Star color='red'/>
-              }
-            </Box >
+            <Favourite id={launch.flight_number}/>
           </Flex>
   
           <Box

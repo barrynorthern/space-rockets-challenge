@@ -1,5 +1,5 @@
 import React from "react";
-import { SimpleGrid, Flex } from "@chakra-ui/core";
+import { SimpleGrid, Flex } from "@chakra-ui/react";
 
 import { useSpaceXPaginated } from "../utils/use-space-x";
 import Error from "./error";

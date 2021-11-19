@@ -8,8 +8,8 @@ import {
     DrawerHeader,
     DrawerBody,
     SimpleGrid
-} from "@chakra-ui/core";
-import { useDisclosure } from "@chakra-ui/core"
+} from "@chakra-ui/react";
+import { useDisclosure } from "@chakra-ui/react"
 import { LaunchItemById } from './launch-item';
 import { useFavourites } from '../utils/use-favourites';
 

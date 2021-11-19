@@ -1,7 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router } from "react-router-dom";
-import { ThemeProvider, CSSReset } from "@chakra-ui/core";
+import { ChakraProvider } from "@chakra-ui/react";
+import { theme } from "@chakra-ui/theme";
 
 import App from "./components/app";
 import { LocalStorageContextProvider } from "./local-storage-context";
@@ -10,10 +11,9 @@ ReactDOM.render(
   <React.StrictMode>
     <LocalStorageContextProvider>
       <Router>
-          <ThemeProvider>
-                <CSSReset />
-                <App />
-          </ThemeProvider>
+          <ChakraProvider theme={theme}>
+            <App />
+          </ChakraProvider>
       </Router>
     </LocalStorageContextProvider>
   </React.StrictMode>,
