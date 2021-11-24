@@ -1,8 +1,8 @@
 import React from "react";
-import { Badge, Box, Image, Text, Flex } from "@chakra-ui/react";
+import { Badge, Box, Image, Text, Flex, Tooltip } from "@chakra-ui/react";
 import { format as timeAgo } from "timeago.js";
 import { Link } from "react-router-dom";
-import { formatDate } from "../utils/format-date";
+import { formatDate, formatDateTimeLocal } from "../utils/format-date";
 import { useSpaceX } from "../utils/use-space-x";
 import Error from "./error"; // might need a different error markup here
 import Favourite from './favourite';
@@ -99,7 +99,9 @@ export function LaunchItem({ launch }) {
             {launch.mission_name}
           </Box>
           {launch.launch_date_utc && <Flex>
-            <Text fontSize="sm">{formatDate(launch.launch_date_utc)} </Text>
+            <Tooltip label={formatDate(launch.launch_date_local)}>
+              <Text fontSize="sm">{formatDateTimeLocal(launch.launch_date_local)} </Text>
+            </Tooltip>
             <Text color="gray.500" ml="2" fontSize="sm">
               {timeAgo(launch.launch_date_utc)}
             </Text>
